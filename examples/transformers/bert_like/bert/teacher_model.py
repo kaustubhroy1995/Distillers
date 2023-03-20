@@ -19,3 +19,6 @@ class TeacherModel(BertModel):
         super().__init__()
         self.bert = BertModel(config)
         
+    def forward(self, input):
+        return self.bert(**input, output_attentions=True, output_hidden_states=True)
+
