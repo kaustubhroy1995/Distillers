@@ -30,20 +30,21 @@ class TeacherStudentCosineEmbeddingLoss(loss._Loss):
 
         suppose the student model has 4 layers and the teacher model has 8 layers, and we want every student layer to
         map to the arithmetic mean of every two teacher layers' hidden output:
-        layer_map = |   0.5 0.5 0   0   0   0   0   0   |
-                    |   0   0   0.5 0.5 0   0   0   0   |
-                    |   0   0   0   0   0.5 0.5 0   0   |
-                    |   0   0   0   0   0   0   0.5 0.5 |
+        layer_map = |   0.5     0.5     0       0       0       0       0       0       |
+                    |   0       0       0.5     0.5     0       0       0       0       |
+                    |   0       0       0       0       0.5     0.5     0       0       |
+                    |   0       0       0       0       0       0       0.5     0.5     |
         """
         super().__init__(size_average, reduce, reduction)
         self.layer_map = layer_map
+        self.loss_fn = nn.CosineEmbeddingLoss()
 
     def forward(self, student_output, teacher_output):
         """
         """
         student_hidden_layers = student_output.hidden_states
         teacher_hidden_layers = teacher_output.hidden_states
-        for i,j in self.layer_map:
-
-
+        for idx, weight in np.ndenumerate(self.layer_map):
+            loss += weight*self.loss_fn(student_hidden_layers[idx[0]], teacher_hidden_layers[idx[1]])
+        return loss
         
