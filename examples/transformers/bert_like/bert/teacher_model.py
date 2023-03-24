@@ -22,3 +22,4 @@ class TeacherModel(BertModel):
     def forward(self, input):
         return self.bert(**input, output_attentions=True, output_hidden_states=True)
 
+TEACHER_MODEL = TeacherModel(TEACHER_CONFIG)

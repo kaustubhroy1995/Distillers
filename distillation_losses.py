@@ -1,5 +1,6 @@
 from __init__ import *
 import torch.nn.modules.loss as loss
+import torch.nn as nn
 
 class TeacherStudentCELoss(loss._Loss):
     def __init__(self, size_average=None, reduce=None, reduction: str = 'mean') -> None:
